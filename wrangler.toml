@@ -1,0 +1,44 @@
+name = "tharunationcommunity"
+main = "src/index.js"
+compatibility_date = "2026-10-06"
+workers_dev = true
+
+# Custom domain (zone must be active in this Cloudflare account). Wrangler creates the DNS records + certificate.
+routes = [
+  { pattern = "tharunationcommunity.com.np", custom_domain = true },
+  { pattern = "www.tharunationcommunity.com.np", custom_domain = true }
+]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tharu-nation-db"
+database_id = "4897e839-fcff-4ada-bb98-4bfc40fe4249"
+migrations_dir = "migrations"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "tharu-nation-media"
+
+# Per-IP flood control for /api (about 300 requests/minute per visitor; generous for people, tight for scripts).
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 300, period = 60 }
+
+[vars]
+# Username used ONLY to bootstrap the first administrator (see README). Not a secret.
+ADMIN_USERNAME = "admin"
+
+# Daily housekeeping: expired sessions, old rate-limit rows, analytics past retention, stale multipart uploads.
+[triggers]
+crons = ["17 3 * * *"]
+
+[observability]
+enabled = true
+
+# Secrets (never put values here):  wrangler secret put SESSION_SECRET   |   wrangler secret put ADMIN_PASSWORD

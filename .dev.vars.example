@@ -1,0 +1,12 @@
+# Copy to .dev.vars for LOCAL development only (wrangler dev reads it). Never commit .dev.vars.
+# Production values are set with `wrangler secret put <NAME>`, never in a file.
+
+# Random string, at least 32 characters. Used to sign/hash sessions, IP hashes and analytics visitor hashes.
+SESSION_SECRET=replace-with-a-long-random-string-at-least-32-chars
+
+# Only used to bootstrap the FIRST administrator (or to upgrade a legacy admin row).
+# After the first successful sign-in the account has its own PBKDF2 hash and this value is no longer accepted for it.
+ADMIN_PASSWORD=replace-with-a-strong-bootstrap-password
+
+# Optional: lower PBKDF2 cost (10000-100000) if sign-in hits the Workers Free 10 ms CPU limit. Default 100000.
+# PBKDF2_ITERATIONS=100000

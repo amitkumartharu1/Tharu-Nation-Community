@@ -1,0 +1,20 @@
+{
+  "name": "tharu-nation-community",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tharu Nation Community — cultural heritage platform on Cloudflare Workers, D1 and R2",
+  "scripts": {
+    "dev": "wrangler d1 migrations apply tharu-nation-db --local && wrangler dev",
+    "test": "node --test --test-concurrency=1 tests/unit.test.mjs tests/integration.test.mjs tests/membership.test.mjs tests/security.test.mjs tests/festivals.test.mjs",
+    "test:unit": "node --test tests/unit.test.mjs",
+    "test:large": "node --test tests/large-upload.test.mjs",
+    "check": "node --check src/index.js && wrangler deploy --dry-run",
+    "migrate:local": "wrangler d1 migrations apply tharu-nation-db --local",
+    "migrate:remote": "wrangler d1 migrations apply tharu-nation-db --remote",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.76.0"
+  }
+}
